@@ -1,0 +1,152 @@
+// Tic Tac Toe challenge pg 188
+
+Console.WriteLine("This is a game of Tic-Tac-Toe.");
+Console.WriteLine("How many rounds would you like to play?");
+
+int roundsToPlay = Convert.ToInt32(Console.ReadLine());
+int round = 1;
+
+Console.Clear();
+
+Console.Write("Player 1 will play as crosses (X). What is Player 1's name? ");
+string player1 = Console.ReadLine();
+Player playerOne = new Player(player1, CellValue.X);
+
+Console.Write("Player 2 will play as noughts (O). What is Player 2's name? ");
+string player2 = Console.ReadLine();
+Player playerTwo = new Player(player2, CellValue.O);
+
+// while (round <= roundsToPlay)            
+//     TicTacToeGame game = new TicTacToeGame.();     
+
+public class Player
+{
+    public string Name { get; }
+    public int score { get; set; }
+    public CellValue symbol { get; }
+
+    public Player(string name, CellValue symbol) 
+    { 
+        this.Name = name; 
+        this.symbol = symbol;
+        score = 0;
+    }
+
+}
+
+public class TicTacToeGame
+{
+    public void Run()
+    {
+        Board board = new Board();
+        int turn = 0;
+        Player currentPlayer;
+
+        if (turn % 2 == 0)
+            currentPlayer = playerOne;
+        else currentPlayer = playerTwo;
+
+
+
+        while (turn < 9)
+        {
+            
+            
+        }
+    }
+    
+    // Parking until tomorrow to attack fresh
+    // TODO:   - figure out how to alternate players in a way that the result updates the winner
+    //         - how to call the methods properly and make main game work
+    //
+                    
+
+    // Run game loop
+    //   track and state whos turn
+    //   call renderer X
+    //   call player input
+    //   update board
+    //   ask for win/draw
+    // Announce win or draw
+    // Update Player score
+}   // Main game 
+
+public class PlayerInput        // Class that asks for player input and converts that to something the board can interpret by calling Cell class
+{
+    public Cell GetSelection()
+    {
+        ConsoleKey selection = Console.ReadKey(true).Key;
+        return selection switch
+        {
+            ConsoleKey.NumPad7 => new Cell(1, 1),
+            ConsoleKey.NumPad8 => new Cell(1, 2),
+            ConsoleKey.NumPad9 => new Cell(1, 3),
+            ConsoleKey.NumPad4 => new Cell(2, 1),
+            ConsoleKey.NumPad5 => new Cell(2, 2),
+            ConsoleKey.NumPad6 => new Cell(2, 3),
+            ConsoleKey.NumPad1 => new Cell(3, 1),
+            ConsoleKey.NumPad2 => new Cell(3, 2),
+            ConsoleKey.NumPad3 => new Cell(3, 3),
+        };
+    }
+}
+
+public class Cell               // Class to bridge the gap between Player input and the 2D array in board
+{
+    readonly int row;
+    readonly int column;
+
+    public Cell(int row, int column)
+    {
+        this.row = row;
+        this.column = column;
+    }
+}
+
+public class Board              //Class that manages the board and all changes to it
+{
+    public CellValue[,] _grid = new CellValue[3,3];
+
+    public bool IsEmpty(int row, int column)
+    {
+        if (_grid[row, column] != CellValue.X && _grid[row, column] != CellValue.O) 
+            return true;
+        return false;
+    }
+    public void UpdateCell(int row, int column, CellValue value) => _grid[row, column] = value;
+    public bool WinCheck(CellValue symbol)
+    {
+        //check rows
+        if (_grid[1, 1] == symbol && _grid[1, 2] == symbol && _grid[1, 3] == symbol) return true;
+        if (_grid[2, 1] == symbol && _grid[2, 2] == symbol && _grid[2, 3] == symbol) return true;
+        if (_grid[3, 1] == symbol && _grid[3, 2] == symbol && _grid[3, 3] == symbol) return true;
+
+        //check columns
+        if (_grid[1, 1] == symbol && _grid[2, 1] == symbol && _grid[3, 1] == symbol) return true;
+        if (_grid[1, 2] == symbol && _grid[2, 2] == symbol && _grid[3, 2] == symbol) return true;
+        if (_grid[1, 3] == symbol && _grid[2, 3] == symbol && _grid[3, 3] == symbol) return true;
+
+        //check diagonal
+        if (_grid[1, 1] == symbol && _grid[2, 2] == symbol && _grid[3, 3] == symbol) return true;
+        if (_grid[1, 3] == symbol && _grid[2, 2] == symbol && _grid[3, 1] == symbol) return true;
+
+        return false;
+    }
+}
+
+public class Renderer           // Class to display current game state to the players
+{
+    public void Render(Player player, Board board)
+    {
+        Console.WriteLine($" It is {player}'s turn.");
+        Console.WriteLine($"  {board._grid[1, 1]} | {board._grid[1, 2]} | {board._grid[1, 3]} ");
+        Console.WriteLine($" ---+---+---");
+        Console.WriteLine($"  {board._grid[2, 1]} | {board._grid[2, 2]} | {board._grid[2, 3]} ");
+        Console.WriteLine($" ---+---+---");
+        Console.WriteLine($"  {board._grid[3, 1]} | {board._grid[3, 2]} | {board._grid[3, 3]} ");
+        Console.WriteLine($" ");
+        Console.WriteLine($" What square do you want to play in?");
+    }
+}
+
+public enum CellValue { Empty, X, O }
